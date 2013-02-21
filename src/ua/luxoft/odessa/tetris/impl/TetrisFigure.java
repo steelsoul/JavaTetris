@@ -35,7 +35,7 @@ public class TetrisFigure implements IObserver {
 		switch (dir)
 		{
 		case UP:
-			mFigure.getStrategy().switchOrientation();
+			mFigure.getStrategy().checkUp(mFigure.getCoordinates(), mBoard);
 			break;
 		case DOWN:
 			if (checkDown())

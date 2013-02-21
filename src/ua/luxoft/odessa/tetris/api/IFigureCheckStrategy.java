@@ -1,5 +1,8 @@
 package ua.luxoft.odessa.tetris.api;
 
+import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
+import ua.luxoft.odessa.tetris.impl.Board;
+
 public interface IFigureCheckStrategy {
 	public static final int SIZE = 4;
 	public enum OrientationLURD
@@ -40,11 +43,8 @@ public interface IFigureCheckStrategy {
 		
 		public abstract OrientationHW next();	
 	}
-//	public void checkUp(Coordinates coordinates);
-//	public void checkLeft(Coordinates coordinates);
-//	public void checkRight(Coordinates coordinates);
-//	public Boolean checkDown(Coordinates coordinates);
+	
+	public void checkUp(Coordinates coord, Board board);
 	public Boolean[][] getPresentation();
-	public void switchOrientation();
 
 }
