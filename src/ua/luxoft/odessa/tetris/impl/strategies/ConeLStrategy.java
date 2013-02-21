@@ -45,6 +45,7 @@ public class ConeLStrategy implements IFigureCheckStrategy {
 			{
 				if (checkSpace(coordinates.x - 1, coordinates.y, board) == false)
 					return;
+				coordinates.x--;
 			}
 			else 
 				if (checkSpace(coordinates.x, coordinates.y, board) == false)
