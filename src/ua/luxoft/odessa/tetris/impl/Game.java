@@ -20,10 +20,10 @@ public class Game extends Canvas implements Runnable, IObserver {
 	private static final long serialVersionUID = 1L;
 	private Boolean isRunning;
 	private Boolean isTimeToMove;
-	private final Board mBoard = new Board();
 	private final InfoTable mInfoTable = 
 			new InfoTable(new Coordinates(Board.WIDTH*IFigure.SIDE_SIZE + 3, 
 					IFigure.SIDE_SIZE * 2));
+	private final Board mBoard = new Board(mInfoTable);
 	private KeyInputHandler mInputHandler;
 	private TetrisFigure mFigure, mNextFigure;
 	

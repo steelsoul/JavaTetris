@@ -24,8 +24,8 @@ public class InfoTable implements ActionListener, IObservable {
 
 	public InfoTable(Coordinates coordinates)
 	{
-		setScores(0);
-		setLevel(0);
+		mScores = 0;
+		mLevel = 0;
 		mNextFigure = null;
 		mCoordinates = coordinates;
 		mTimer = new Timer(500, this);
@@ -42,8 +42,15 @@ public class InfoTable implements ActionListener, IObservable {
 		return mScores;
 	}
 
-	public void setScores(int scores) {
-		this.mScores = scores;
+	public void addScores(int scores) {
+		mScores += scores;
+		if (mScores % 100 == 0)
+		{
+			mLevel++;
+			mTimer.setDelay(500 - 5*mLevel);
+			mTimer.restart();
+		}
+			
 	}
 
 	public int getLevel() {

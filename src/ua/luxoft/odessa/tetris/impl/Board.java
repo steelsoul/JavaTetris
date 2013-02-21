@@ -19,10 +19,14 @@ public class Board {
 	public static final int WIDTH = 10;
 	public static final int HEIGHT = 20;
 	
-	private Cell[][] mNewBoard = new Cell[WIDTH + 2][HEIGHT + 1];
 	
-	public Board()
+	private Cell[][] mNewBoard = new Cell[WIDTH + 2][HEIGHT + 1];
+	private InfoTable mInfoTable;
+	
+	public Board(InfoTable info)
 	{
+		mInfoTable = info;
+		
 		// Create the bottom border
 		for (int i = 0; i < WIDTH + 2; i++)
 		{
@@ -90,7 +94,7 @@ public class Board {
 	private void clearLine(int h)
 	{
 		// put down all above
-		for (int y = h; y > 0; y--)
+		for (int y = h; y > 0; y--)		
 			for (int x = 1; x < WIDTH + 1; x++)
 			{
 				mNewBoard[x][y] = null;
@@ -102,7 +106,7 @@ public class Board {
 				}
 				if (mNewBoard[x][y-1].isVisible())
 					mNewBoard[x][y].makeVisible();
-			}
+			}		
 	}
 	
 	public void checkBoard()
@@ -121,6 +125,7 @@ public class Board {
 			if (isLineToClear)
 			{
 				clearLine(y);
+				mInfoTable.addScores(10);
 			}
 		}
 	}
