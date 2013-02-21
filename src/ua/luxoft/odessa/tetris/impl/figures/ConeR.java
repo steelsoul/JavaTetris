@@ -12,12 +12,12 @@ public class ConeR implements IFigure {
 	private Coordinates mCoordinates;
 	private IFigureCheckStrategy mStrategy;
 	
-	public ConeR(Board board)
+	public ConeR()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - 4)/2;
 		mCoordinates.y = -1;
-		mStrategy = new ConeRStrategy(board);
+		mStrategy = new ConeRStrategy();
 	}
 	
 	@Override

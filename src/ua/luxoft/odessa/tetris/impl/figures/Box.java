@@ -11,12 +11,12 @@ public class Box implements IFigure {
 	private Coordinates mCoordinates;
 	private IFigureCheckStrategy mStrategy;
 	
-	public Box(Board board)
+	public Box()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - BoxStrategy.WIDTH) / 2 - 2;
 		mCoordinates.y = -2;
-		mStrategy = new BoxStrategy(board);
+		mStrategy = new BoxStrategy();
 	}
 
 	@Override

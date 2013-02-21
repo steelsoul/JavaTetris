@@ -12,7 +12,6 @@ import ua.luxoft.odessa.tetris.api.IFigure;
 import ua.luxoft.odessa.tetris.api.IObservable;
 import ua.luxoft.odessa.tetris.api.IObserver;
 import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
-import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
 
 public class InfoTable implements ActionListener, IObservable {
 	public static final int WIDTH = 80;

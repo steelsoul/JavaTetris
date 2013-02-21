@@ -18,10 +18,12 @@ public class TetrisFigure implements IObserver {
 	private final int SIDE_SIZE = 10;
 		
 	private IFigure mFigure;
+	private Board mBoard;
 	
-	TetrisFigure(IFigure figure)
+	TetrisFigure(IFigure figure, Board board)
 	{
-		mFigure = figure;	
+		mFigure = figure;
+		mBoard = board;
 	}
 	
 	public void setFigure(IFigure figure)
@@ -33,23 +35,74 @@ public class TetrisFigure implements IObserver {
 		switch (dir)
 		{
 		case UP:
-			mFigure.getStrategy().checkUp(mFigure.getCoordinates());			
+			mFigure.getStrategy().switchOrientation();
 			break;
 		case DOWN:
-			if (mFigure.getStrategy().checkDown(mFigure.getCoordinates()))
-			{
+			if (checkDown())
 				mFigure.getCoordinates().y++;
-			}
 			break;
 		case LEFT:
-			mFigure.getStrategy().checkLeft(mFigure.getCoordinates());
+			if (checkLeft())
+				mFigure.getCoordinates().x--;
 			break;
 		case RIGHT:
-			mFigure.getStrategy().checkRight(mFigure.getCoordinates());
+			if (checkRight())
+				mFigure.getCoordinates().x++;		
 			break;
 		default:
 			break;
 		}		
+	}
+	
+	private Boolean checkDown()
+	{
+		Boolean[][] pres = mFigure.getStrategy().getPresentation();
+		for (int x = 0; x < PresentationSize; x++)
+			for (int y = PresentationSize - 1; y  >= 0; y--)
+				if (pres[x][y] != null)
+				{
+					if (mBoard.getMap(
+								mFigure.getCoordinates().x + x, 
+								mFigure.getCoordinates().y + y + 1) == true	)						
+						return false;
+					else
+						break;
+				}
+		return true;
+	}
+	
+	private Boolean checkLeft()
+	{
+		Boolean[][] pres = mFigure.getStrategy().getPresentation();
+		for (int y = 0; y < PresentationSize; y++)
+			for (int x = 0; x < PresentationSize; x++)
+				if (pres[x][y] != null)
+				{
+					if (mBoard.getMap(
+								mFigure.getCoordinates().x + x - 1, 
+								mFigure.getCoordinates().y + y) == true)
+						return false;
+					else
+						break;
+				}
+		return true;
+	}
+	
+	private Boolean checkRight()
+	{
+		Boolean[][] pres = mFigure.getStrategy().getPresentation();
+		for (int y = 0; y < PresentationSize; y++)
+			for (int x = PresentationSize - 1; x >= 0; x--)
+				if (pres[x][y] != null)
+				{
+					if (mBoard.getMap(
+								mFigure.getCoordinates().x + x + 1,
+								mFigure.getCoordinates().y + y) == true)
+						return false;
+					else
+						break;
+				}
+		return true;
 	}
 
 	public void draw(Graphics g, Coordinates coords) {
@@ -78,12 +131,12 @@ public class TetrisFigure implements IObserver {
 	}
 
 	public Boolean stepDown() {
-		if (mFigure.getStrategy().checkDown(mFigure.getCoordinates()))
+		if (checkDown())
 		{
 			mFigure.getCoordinates().y++;
 			return true;
 		}
-		return false;
+	return false;
 	}
 	
 	public Boolean[][] getPresentation(Coordinates coordinates)
@@ -96,12 +149,6 @@ public class TetrisFigure implements IObserver {
 	public Color getColor()
 	{
 		return mFigure.getColor();
-	}
-
-	@Override
-	public void notify(int score) {
-		// TODO Auto-generated method stub
-		// do nothing
 	}
 
 	@Override

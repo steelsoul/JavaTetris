@@ -12,32 +12,32 @@ import ua.luxoft.odessa.tetris.impl.figures.ZigzagL;
 import ua.luxoft.odessa.tetris.impl.figures.ZigzagR;
 
 public class FigureGenerator {
-	static public IFigure generate(Board board)
+	static public IFigure generate()
 	{
 		IFigure genFigure = null;
 		Random randomGenerator = new Random();
 		switch (randomGenerator.nextInt(IFigure.FIGURE_COUNT))
 		{
 		case 0:
-			genFigure = new Line(board);
+			genFigure = new Line();
 			break;
 		case 1:
-			genFigure = new Box(board);
+			genFigure = new Box();
 			break;
 		case 2:
-			genFigure = new ConeL(board);
+			genFigure = new ConeL();
 			break;
 		case 3:
-			genFigure = new ZigzagR(board);
+			genFigure = new ZigzagR();
 			break;
 		case 4:
-			genFigure = new ConeR(board);
+			genFigure = new ConeR();
 			break;
 		case 5:
-			genFigure = new ZigzagL(board);
+			genFigure = new ZigzagL();
 			break;
 		case 6:
-			genFigure = new TForm(board);
+			genFigure = new TForm();
 			break;
 		}
 		randomGenerator = null;

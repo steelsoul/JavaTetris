@@ -13,12 +13,12 @@ public class ConeL implements IFigure {
 	private Coordinates mCoordinates;
 	private IFigureCheckStrategy mStrategy;
 	
-	public ConeL(Board board)
+	public ConeL()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - 4) / 2 + 1;
 		mCoordinates.y = -1;
-		mStrategy = new ConeLStrategy(board);
+		mStrategy = new ConeLStrategy();
 	}
 	
 	@Override

@@ -14,12 +14,12 @@ public class Line implements IFigure {
 	private IFigureCheckStrategy mStrategy;
 	
 	
-	public Line(Board board)
+	public Line()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - LineStrategy.WIDTH)/2;
 		mCoordinates.y = -2;
-		mStrategy = new LineStrategy(board);
+		mStrategy = new LineStrategy();
 	}
 
 	@Override

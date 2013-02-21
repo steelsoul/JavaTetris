@@ -12,12 +12,12 @@ public class ZigzagR implements IFigure {
 	private Coordinates mCoordinates;
 	private IFigureCheckStrategy mStrategy;
 	
-	public ZigzagR(Board board)
+	public ZigzagR()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - 4)/2;
 		mCoordinates.y = -1;
-		mStrategy = new ZigzagRStrategy(board);
+		mStrategy = new ZigzagRStrategy();
 	}
 	
 	@Override

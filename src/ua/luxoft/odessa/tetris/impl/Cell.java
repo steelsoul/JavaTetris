@@ -25,6 +25,11 @@ public class Cell {
 		return mChecked;
 	}
 	
+	public Boolean isVisible()
+	{
+		return mVisible;
+	}
+	
 	public Cell makeChecked()
 	{
 		mChecked = true;
@@ -41,6 +46,11 @@ public class Cell {
 	{
 		mColor = c;
 		return this;
+	}
+	
+	public Color getColor()
+	{
+		return mColor;
 	}
 	
 	public void free()

@@ -93,7 +93,15 @@ public class Board {
 		for (int y = h; y > 0; y--)
 			for (int x = 1; x < WIDTH + 1; x++)
 			{
-				mNewBoard[x][y] = mNewBoard[x][y - 1];
+				mNewBoard[x][y] = null;
+				mNewBoard[x][y] = new Cell();
+				if (mNewBoard[x][y-1].getCheck())
+				{
+					mNewBoard[x][y].makeChecked();
+					mNewBoard[x][y].setColor(mNewBoard[x][y-1].getColor());
+				}
+				if (mNewBoard[x][y-1].isVisible())
+					mNewBoard[x][y].makeVisible();
 			}
 	}
 	
@@ -114,6 +122,6 @@ public class Board {
 			{
 				clearLine(y);
 			}
-		}		
+		}
 	}
 }

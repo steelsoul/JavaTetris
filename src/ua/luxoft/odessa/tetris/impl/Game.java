@@ -45,8 +45,8 @@ public class Game extends Canvas implements Runnable, IObserver {
 	public void init() {
 		mInputHandler = new KeyInputHandler();
 		addKeyListener(mInputHandler);
-		mFigure = new TetrisFigure(FigureGenerator.generate(mBoard));
-		mNextFigure = new TetrisFigure(FigureGenerator.generate(mBoard));
+		mFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
+		mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
 		mInfoTable.setNextFigure(mNextFigure);
 		mInputHandler.addObserver(mFigure);	
 		mInfoTable.addObserver(this);
@@ -79,7 +79,7 @@ public class Game extends Canvas implements Runnable, IObserver {
 				mInputHandler.removeObserver(mFigure);
 				mFigure = mNextFigure;
 				mInputHandler.addObserver(mFigure);
-				mNextFigure = new TetrisFigure(FigureGenerator.generate(mBoard));
+				mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
 				mInfoTable.setNextFigure(mNextFigure);
 			}
 			isTimeToMove = false;			
@@ -112,11 +112,6 @@ public class Game extends Canvas implements Runnable, IObserver {
 
 	@Override
 	public void notify(Direction dir) {
-		
-	}
-
-	@Override
-	public void notify(int score) {
 		
 	}
 

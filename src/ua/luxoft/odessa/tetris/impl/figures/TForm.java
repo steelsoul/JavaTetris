@@ -12,12 +12,12 @@ public class TForm implements IFigure {
 	private IFigureCheckStrategy mStrategy;
 	private Coordinates mCoordinates;
 	
-	public TForm(Board board)
+	public TForm()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - 4)/2;
 		mCoordinates.y  = -1;
-		mStrategy = new TFormStrategy(board);
+		mStrategy = new TFormStrategy();
 	}
 	
 	@Override

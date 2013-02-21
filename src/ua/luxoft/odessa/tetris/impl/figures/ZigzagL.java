@@ -12,12 +12,12 @@ public class ZigzagL implements IFigure {
 	private Coordinates mCoordinates;
 	private IFigureCheckStrategy mStrategy;
 	
-	public ZigzagL(Board board)
+	public ZigzagL()
 	{
 		mCoordinates = new Coordinates();
 		mCoordinates.x = (Board.WIDTH - 4)/2;
 		mCoordinates.y = -1;
-		mStrategy = new ZigzagLStrategy(board);
+		mStrategy = new ZigzagLStrategy();
 	}
 
 	@Override
