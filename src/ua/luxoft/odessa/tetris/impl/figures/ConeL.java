@@ -33,7 +33,7 @@ public class ConeL implements IFigure {
 
 	@Override
 	public Color getColor() {
-		return Color.CYAN;
+		return Color.ORANGE;
 	}
 
 }

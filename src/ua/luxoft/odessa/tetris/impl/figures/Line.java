@@ -35,7 +35,7 @@ public class Line implements IFigure {
 
 	@Override
 	public Color getColor() {
-		return Color.GREEN;
+		return Color.CYAN;
 	}
 
 }

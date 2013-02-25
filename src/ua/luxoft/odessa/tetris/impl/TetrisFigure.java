@@ -144,9 +144,9 @@ public class TetrisFigure implements IObserver {
 							(mFigure.getCoordinates().y + y)*SIDE_SIZE + 1 + coords.y, 
 							SIDE_SIZE, SIDE_SIZE);
 					g.setColor(mFigure.getColor().darker());
-					g.drawRect((mFigure.getCoordinates().x + x)*SIDE_SIZE + 1 + coords.x, 
-							(mFigure.getCoordinates().y + y)*SIDE_SIZE + 1 + coords.y, 
-							SIDE_SIZE, SIDE_SIZE);
+					g.drawRect((mFigure.getCoordinates().x + x)*SIDE_SIZE + 1 + coords.x + 1, 
+							(mFigure.getCoordinates().y + y)*SIDE_SIZE + 1 + coords.y + 1, 
+							SIDE_SIZE - 2, SIDE_SIZE - 2);
 				}
 			}		
 	}

@@ -44,10 +44,61 @@ public class InfoTable implements ActionListener, IObservable {
 
 	public void addScores(int scores) {
 		mScores += scores;
-		if (mScores % 500 == 0)
+		Boolean isRestartTimer = false;
+		if (mScores > 1000)
 		{
-			mLevel++;
-			mTimer.setDelay(500 - 15*mLevel);
+			mLevel = 1;
+			isRestartTimer = true;
+		}
+		else if (mScores > 2000)
+		{
+			mLevel = 2;
+			isRestartTimer = true;
+		}
+		else if (mScores > 3500)
+		{
+			mLevel = 3;
+			isRestartTimer = true;
+		}
+		else if (mScores > 4800)
+		{
+			mLevel = 4;
+			isRestartTimer = true;
+		}
+		else if (mScores > 6000)
+		{
+			mLevel = 5;
+			isRestartTimer = true;
+		}
+		else if (mScores > 7800)
+		{
+			mLevel = 6;
+			isRestartTimer = true;
+		}
+		else if (mScores > 9000)
+		{
+			mLevel = 7;
+			isRestartTimer = true;
+		}
+		else if (mScores > 11500)
+		{
+			mLevel = 8;
+			isRestartTimer = true;
+		}
+		else if (mScores > 13000)
+		{
+			mLevel = 9;
+			isRestartTimer = true;
+		}
+		else if (mScores > 20000)
+		{
+			mLevel = 10;
+			isRestartTimer = true;
+		}
+			
+		if (isRestartTimer)
+		{
+			mTimer.setDelay(500 - 50*mLevel);
 			mTimer.restart();
 		}
 			

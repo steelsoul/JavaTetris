@@ -31,7 +31,7 @@ public class Box implements IFigure {
 
 	@Override
 	public Color getColor() {
-		return Color.BLUE;
+		return Color.PINK;
 	}
 
 }

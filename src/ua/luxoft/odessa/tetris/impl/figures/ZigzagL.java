@@ -32,7 +32,7 @@ public class ZigzagL implements IFigure {
 
 	@Override
 	public Color getColor() {
-		return Color.ORANGE;
+		return Color.GREEN;
 	}
 
 }

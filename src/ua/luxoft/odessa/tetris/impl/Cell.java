@@ -69,8 +69,8 @@ public class Cell {
 			if (mChecked)
 			{
 				g.setColor(mColor.darker());
-				g.drawRect(pos.x, pos.y, 
-						IFigure.SIDE_SIZE, IFigure.SIDE_SIZE);
+				g.drawRect(pos.x + 2, pos.y + 2, 
+						IFigure.SIDE_SIZE - 2, IFigure.SIDE_SIZE - 2);
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class TForm implements IFigure {
 
 	@Override
 	public Color getColor() {
-		return Color.MAGENTA;
+		return Color.WHITE;
 	}
 
 }
