@@ -18,6 +18,9 @@ public class Game extends Canvas implements Runnable, IObserver {
 	 *  Game Box
 	 */
 	private static final long serialVersionUID = 1L;
+	private enum GAME_STATE {MENU, GAME, OFF};
+	
+	private GAME_STATE mGameState;
 	private Boolean isRunning;
 	private Boolean isTimeToMove;
 	private final InfoTable mInfoTable = 
@@ -26,8 +29,11 @@ public class Game extends Canvas implements Runnable, IObserver {
 	private final Board mBoard = new Board(mInfoTable);
 	private KeyInputHandler mInputHandler;
 	private TetrisFigure mFigure, mNextFigure;
+	private Menu mMenu;
 	
 	public void start() {
+		mGameState = GAME_STATE.MENU;
+		mMenu = new Menu();
 		isRunning = true;
 		isTimeToMove = true;
 		new Thread(this).start();
@@ -49,6 +55,7 @@ public class Game extends Canvas implements Runnable, IObserver {
 		mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
 		mInfoTable.setNextFigure(mNextFigure);
 		mInputHandler.addObserver(mFigure);	
+		mInputHandler.addObserver(mMenu);
 		mInfoTable.addObserver(this);
 	}
 	
@@ -64,26 +71,54 @@ public class Game extends Canvas implements Runnable, IObserver {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0,  0,  getWidth(), getHeight());
-		/*
-		 *  Here field and figures should be drawn
-		 * */
-		mBoard.draw(g);
-		mInfoTable.draw(g);
-		mFigure.draw(g, new Coordinates(0, 0));
-		if (isTimeToMove)
+		
+		switch (mGameState)
 		{
-			if (!mFigure.stepDown())
+		case MENU:
+			if  (!mMenu.getStarted())
 			{
-				mBoard.setMap(mFigure);
-				mBoard.checkBoard();
-				mInputHandler.removeObserver(mFigure);
-				mFigure = mNextFigure;
-				mInputHandler.addObserver(mFigure);
-				mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
-				mInfoTable.setNextFigure(mNextFigure);
+				g.setColor(Color.ORANGE);
+				g.drawString("Press any key to start game", 15, 20);
+			} 
+			else
+			{
+				mInputHandler.removeObserver(mMenu);
+				mGameState = GAME_STATE.GAME;
 			}
-			isTimeToMove = false;			
+			break;
+		case GAME:			
+		
+			/*
+			 *  Here field and figures should be drawn
+			 * */
+			mBoard.draw(g);
+			mInfoTable.draw(g);
+			
+			if (mFigure.isDrawable())
+				mFigure.draw(g, new Coordinates(0, 0));
+			else
+				mGameState = GAME_STATE.OFF;
+			
+			if (isTimeToMove)
+			{
+				if (!mFigure.stepDown())
+				{
+					mBoard.setMap(mFigure);
+					mBoard.checkBoard();
+					mInputHandler.removeObserver(mFigure);
+					mFigure = mNextFigure;
+					mInputHandler.addObserver(mFigure);
+					mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
+					mInfoTable.setNextFigure(mNextFigure);
+				}
+				isTimeToMove = false;			
+			}
+			break;
+		case OFF:
+			mMenu.drawGameOver(g, mInfoTable.getScores());
+			break;
 		}
+		
 		g.dispose();
 		bs.show();
 	}

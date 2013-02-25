@@ -44,10 +44,10 @@ public class InfoTable implements ActionListener, IObservable {
 
 	public void addScores(int scores) {
 		mScores += scores;
-		if (mScores % 100 == 0)
+		if (mScores % 500 == 0)
 		{
 			mLevel++;
-			mTimer.setDelay(500 - 5*mLevel);
+			mTimer.setDelay(500 - 15*mLevel);
 			mTimer.restart();
 		}
 			

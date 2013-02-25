@@ -49,9 +49,36 @@ public class TetrisFigure implements IObserver {
 			if (checkRight())
 				mFigure.getCoordinates().x++;		
 			break;
+		case FALL:
+			checkFall();
+			break;
 		default:
 			break;
 		}		
+	}
+	
+	public Boolean isDrawable()
+	{
+		Boolean[][] pres = mFigure.getStrategy().getPresentation();
+		for (int x = 0; x < IFigureCheckStrategy.SIZE; x++)
+			for (int y = 0; y < IFigureCheckStrategy.SIZE; y++)
+				if (pres[x][y] != null 
+				&& mBoard.getMap(mFigure.getCoordinates().x + x, 
+						mFigure.getCoordinates().y + y ) == true)
+					return false;
+		return true;
+	}
+	
+	/**
+	 *  move the figure to the lowest position in the barrel
+	 * 
+	 * */
+	private void checkFall()
+	{
+		while (checkDown())
+		{
+			mFigure.getCoordinates().y++;	
+		}
 	}
 	
 	private Boolean checkDown()

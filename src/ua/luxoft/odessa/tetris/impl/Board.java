@@ -111,6 +111,7 @@ public class Board {
 	
 	public void checkBoard()
 	{		
+		int amountOfLines = 0;
 		for (int y = 0; y < HEIGHT;  y++)
 		{
 			Boolean isLineToClear = true;
@@ -125,8 +126,10 @@ public class Board {
 			if (isLineToClear)
 			{
 				clearLine(y);
-				mInfoTable.addScores(10);
+				amountOfLines++;
 			}
 		}
+		if (amountOfLines != 0)
+			mInfoTable.addScores(25 + 7*(amountOfLines-1));
 	}
 }
