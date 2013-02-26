@@ -5,16 +5,21 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
+
 import ua.luxoft.odessa.tetris.api.IFigure;
 import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
 import ua.luxoft.odessa.tetris.api.IInputObserver;
 import ua.luxoft.odessa.tetris.api.ITimeObserver;
 import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
 
-public class Game extends Canvas implements Runnable, ITimeObserver, IInputObserver {
+public class Game extends Canvas implements Runnable, ITimeObserver, 
+		IInputObserver, ActionListener {
 	/**
 	 *  Game Box
 	 */
@@ -25,13 +30,17 @@ public class Game extends Canvas implements Runnable, ITimeObserver, IInputObser
 	private Boolean isRunning;
 	private Boolean isTimeToMove;
 	private Boolean isPaused;
+	private Boolean isAddDelayActive;
+	
 	private final InfoTable mInfoTable = 
 			new InfoTable(new Coordinates(Board.WIDTH*IFigure.SIDE_SIZE + 3, 
 					IFigure.SIDE_SIZE * 2));
+	
 	private final Board mBoard = new Board(mInfoTable);
 	private KeyInputHandler mInputHandler;
 	private TetrisFigure mFigure, mNextFigure;
 	private Menu mMenu;
+	private Timer mAddDelayTimer;
 	
 	public void start() {
 		mGameState = GAME_STATE.MENU;
@@ -39,7 +48,9 @@ public class Game extends Canvas implements Runnable, ITimeObserver, IInputObser
 		isRunning = true;
 		isTimeToMove = true;
 		isPaused = false;
+		isAddDelayActive = false;
 		new Thread(this).start();
+		mAddDelayTimer = null;
 	}
 	
 	public void run() {
@@ -106,13 +117,24 @@ public class Game extends Canvas implements Runnable, ITimeObserver, IInputObser
 			{
 				if (!mFigure.stepDown())
 				{
-					mBoard.setMap(mFigure);
-					mBoard.checkBoard();
-					mInputHandler.removeObserver(mFigure);
-					mFigure = mNextFigure;
-					mInputHandler.addObserver(mFigure);
-					mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
-					mInfoTable.setNextFigure(mNextFigure);
+					if (isAddDelayActive == false && mAddDelayTimer == null)
+					{
+						mAddDelayTimer = new Timer(mInfoTable.getDelay(), this);
+						mAddDelayTimer.start();
+						isAddDelayActive = true;
+					}
+					else 
+					{
+						mBoard.setMap(mFigure);
+						mBoard.checkBoard();
+						mInputHandler.removeObserver(mFigure);
+						mFigure = mNextFigure;
+						mInputHandler.addObserver(mFigure);
+						mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
+						mInfoTable.setNextFigure(mNextFigure);
+						mAddDelayTimer = null;
+						isAddDelayActive = false;
+					}
 				}
 				isTimeToMove = false;			
 			}
@@ -165,6 +187,13 @@ public class Game extends Canvas implements Runnable, ITimeObserver, IInputObser
 		{
 			isPaused = !isPaused;
 		}		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		mAddDelayTimer.stop();
+		isAddDelayActive = false;
 	}
 
 }

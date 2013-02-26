@@ -19,8 +19,10 @@ public class InfoTable implements ActionListener, ITimeObservable {
 	private int mLevel;
 	private Coordinates mCoordinates;
 	private Timer mTimer;
+	private int mTimerDelay;
 	private TetrisFigure mNextFigure;
 	private List<ITimeObserver> mObservers = new ArrayList<ITimeObserver>();
+
 
 	public InfoTable(Coordinates coordinates)
 	{
@@ -28,8 +30,9 @@ public class InfoTable implements ActionListener, ITimeObservable {
 		mLevel = 0;
 		mNextFigure = null;
 		mCoordinates = coordinates;
-		mTimer = new Timer(500, this);
-		mTimer.setInitialDelay(100);
+		mTimerDelay = 500;
+		mTimer = new Timer(mTimerDelay, this);
+		mTimer.setInitialDelay(mTimerDelay/5);
 		mTimer.start();		
 	}
 	
@@ -98,7 +101,8 @@ public class InfoTable implements ActionListener, ITimeObservable {
 			
 		if (isRestartTimer)
 		{
-			mTimer.setDelay(500 - 50*mLevel);
+			mTimerDelay = 500 - 50*mLevel;
+			mTimer.setDelay(mTimerDelay);
 			mTimer.restart();
 		}
 			
@@ -110,6 +114,11 @@ public class InfoTable implements ActionListener, ITimeObservable {
 
 	public void setLevel(int level) {
 		this.mLevel = level;
+	}
+	
+	public int getDelay()
+	{
+		return mTimerDelay;
 	}
 	
 	public void draw(Graphics g)
