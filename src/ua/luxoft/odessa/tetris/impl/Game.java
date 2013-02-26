@@ -10,9 +10,11 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import ua.luxoft.odessa.tetris.api.IFigure;
 import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
+import ua.luxoft.odessa.tetris.api.IInputObserver;
 import ua.luxoft.odessa.tetris.api.ITimeObserver;
+import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
 
-public class Game extends Canvas implements Runnable, ITimeObserver {
+public class Game extends Canvas implements Runnable, ITimeObserver, IInputObserver {
 	/**
 	 *  Game Box
 	 */
@@ -22,6 +24,7 @@ public class Game extends Canvas implements Runnable, ITimeObserver {
 	private GAME_STATE mGameState;
 	private Boolean isRunning;
 	private Boolean isTimeToMove;
+	private Boolean isPaused;
 	private final InfoTable mInfoTable = 
 			new InfoTable(new Coordinates(Board.WIDTH*IFigure.SIDE_SIZE + 3, 
 					IFigure.SIDE_SIZE * 2));
@@ -35,6 +38,7 @@ public class Game extends Canvas implements Runnable, ITimeObserver {
 		mMenu = new Menu();
 		isRunning = true;
 		isTimeToMove = true;
+		isPaused = false;
 		new Thread(this).start();
 	}
 	
@@ -56,6 +60,7 @@ public class Game extends Canvas implements Runnable, ITimeObserver {
 		mInputHandler.addObserver(mFigure);	
 		mInputHandler.addObserver(mMenu);
 		mInfoTable.addObserver(this);
+		mInputHandler.addObserver(this);
 	}
 	
 	public void render() {
@@ -112,6 +117,10 @@ public class Game extends Canvas implements Runnable, ITimeObserver {
 				}
 				isTimeToMove = false;			
 			}
+			
+			if (isPaused)
+				mMenu.drawPause(g);
+			
 			break;
 		case OFF:
 			mMenu.drawGameOver(g, mInfoTable.getScores());
@@ -145,7 +154,17 @@ public class Game extends Canvas implements Runnable, ITimeObserver {
 
 	@Override
 	public void notifyOnTime() {
-		isTimeToMove = true;
+		if (!isPaused)
+			isTimeToMove = true;
+	}
+
+	@Override
+	public void notify(Direction dir) {
+		// TODO Auto-generated method stub
+		if (dir == Direction.PAUSE && mGameState == GAME_STATE.GAME)
+		{
+			isPaused = !isPaused;
+		}		
 	}
 
 }

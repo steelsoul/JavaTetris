@@ -10,7 +10,7 @@ import ua.luxoft.odessa.tetris.api.IInputObserver;
 
 
 public class KeyInputHandler extends KeyAdapter implements IInputObservable {
-	public static enum Direction{LEFT, RIGHT, UP, DOWN, FALL, NONE}; 
+	public static enum Direction{LEFT, RIGHT, UP, DOWN, FALL, PAUSE, NONE}; 
 	
 	private List<IInputObserver> mObservers = new ArrayList<IInputObserver>();
 
@@ -33,6 +33,9 @@ public class KeyInputHandler extends KeyAdapter implements IInputObservable {
 			break;
 		case KeyEvent.VK_SPACE:
 			mDirection = Direction.FALL;
+			break;
+		case KeyEvent.VK_P:
+			mDirection = Direction.PAUSE;
 			break;
 		default:
 			mDirection = Direction.NONE;

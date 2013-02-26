@@ -34,6 +34,12 @@ public class Menu implements IInputObserver{
 		g.drawString(str, 30, 80);		
 	}
 	
+	public void drawPause(Graphics g)
+	{
+		g.setColor(Color.yellow);
+		g.drawString("P A U S E", 25, 100);
+	}
+	
 	@Override
 	public void notify(Direction dir) {
 		mIsStarted = true;
