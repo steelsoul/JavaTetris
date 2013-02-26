@@ -5,14 +5,14 @@ import java.awt.Graphics;
 import ua.luxoft.odessa.tetris.api.IFigure;
 import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
 import ua.luxoft.odessa.tetris.api.IFigureCheckStrategy;
-import ua.luxoft.odessa.tetris.api.IObserver;
+import ua.luxoft.odessa.tetris.api.IInputObserver;
 import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
 
 /*
  * Wrapper object for concrete figure
  *
  */
-public class TetrisFigure implements IObserver {
+public class TetrisFigure implements IInputObserver {
 	
 	public static final int PresentationSize = 4;
 	private final int SIDE_SIZE = 10;
@@ -176,12 +176,6 @@ public class TetrisFigure implements IObserver {
 	public Color getColor()
 	{
 		return mFigure.getColor();
-	}
-
-	@Override
-	public void notifyOnTime() {
-		// TODO Auto-generated method stub
-		// should do nothing
 	}
 
 }

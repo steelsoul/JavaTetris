@@ -3,10 +3,10 @@ package ua.luxoft.odessa.tetris.impl;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import ua.luxoft.odessa.tetris.api.IObserver;
+import ua.luxoft.odessa.tetris.api.IInputObserver;
 import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
 
-public class Menu implements IObserver{
+public class Menu implements IInputObserver{
 
 	private Boolean mIsStarted;
 	
@@ -36,14 +36,7 @@ public class Menu implements IObserver{
 	
 	@Override
 	public void notify(Direction dir) {
-		// TODO Auto-generated method stub
 		mIsStarted = true;
-	}
-
-	@Override
-	public void notifyOnTime() {
-		// TODO Auto-generated method stub
-		// do nothing
 	}
 
 }

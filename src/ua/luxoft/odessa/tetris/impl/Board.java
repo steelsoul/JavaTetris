@@ -130,6 +130,6 @@ public class Board {
 			}
 		}
 		if (amountOfLines != 0)
-			mInfoTable.addScores(25 + 7*(amountOfLines-1));
+			mInfoTable.addScores(25 + 45*(amountOfLines-1));
 	}
 }

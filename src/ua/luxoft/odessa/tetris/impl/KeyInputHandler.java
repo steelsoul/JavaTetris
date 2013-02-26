@@ -5,14 +5,14 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.luxoft.odessa.tetris.api.IObservable;
-import ua.luxoft.odessa.tetris.api.IObserver;
+import ua.luxoft.odessa.tetris.api.IInputObservable;
+import ua.luxoft.odessa.tetris.api.IInputObserver;
 
 
-public class KeyInputHandler extends KeyAdapter implements IObservable {
+public class KeyInputHandler extends KeyAdapter implements IInputObservable {
 	public static enum Direction{LEFT, RIGHT, UP, DOWN, FALL, NONE}; 
 	
-	private List<IObserver> mObservers = new ArrayList<IObserver>();
+	private List<IInputObserver> mObservers = new ArrayList<IInputObserver>();
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -39,7 +39,7 @@ public class KeyInputHandler extends KeyAdapter implements IObservable {
 			break;				
 		}	
 		// notify all observers
-		for (IObserver observer: mObservers)
+		for (IInputObserver observer: mObservers)
 			observer.notify(mDirection);
 	}
 	
@@ -56,18 +56,18 @@ public class KeyInputHandler extends KeyAdapter implements IObservable {
 			mDirection = Direction.NONE;
 		}
 		// notify all observers
-		for (IObserver observer: mObservers)
+		for (IInputObserver observer: mObservers)
 			observer.notify(mDirection);
 	}
 	
 	@Override
-	public void addObserver(IObserver o)
+	public void addObserver(IInputObserver o)
 	{
 		mObservers.add(o);
 	}
 	
 	@Override
-	public void removeObserver(IObserver o)
+	public void removeObserver(IInputObserver o)
 	{
 		mObservers.remove(o);
 	}

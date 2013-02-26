@@ -9,18 +9,18 @@ import java.util.List;
 import javax.swing.Timer;
 
 import ua.luxoft.odessa.tetris.api.IFigure;
-import ua.luxoft.odessa.tetris.api.IObservable;
-import ua.luxoft.odessa.tetris.api.IObserver;
 import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
+import ua.luxoft.odessa.tetris.api.ITimeObservable;
+import ua.luxoft.odessa.tetris.api.ITimeObserver;
 
-public class InfoTable implements ActionListener, IObservable {
+public class InfoTable implements ActionListener, ITimeObservable {
 	public static final int WIDTH = 80;
 	private int mScores;
 	private int mLevel;
 	private Coordinates mCoordinates;
 	private Timer mTimer;
 	private TetrisFigure mNextFigure;
-	private List<IObserver> mObservers = new ArrayList<IObserver>();
+	private List<ITimeObserver> mObservers = new ArrayList<ITimeObserver>();
 
 	public InfoTable(Coordinates coordinates)
 	{
@@ -126,17 +126,17 @@ public class InfoTable implements ActionListener, IObservable {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		for (IObserver o: mObservers)
+		for (ITimeObserver o: mObservers)
 			o.notifyOnTime();
 	}
 
 	@Override
-	public void addObserver(IObserver o) {
+	public void addObserver(ITimeObserver o) {
 		mObservers.add(o);
 	}
 
 	@Override
-	public void removeObserver(IObserver o) {
+	public void removeObserver(ITimeObserver o) {
 		mObservers.remove(o);
 	}
 	

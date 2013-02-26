@@ -10,10 +10,9 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import ua.luxoft.odessa.tetris.api.IFigure;
 import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
-import ua.luxoft.odessa.tetris.api.IObserver;
-import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
+import ua.luxoft.odessa.tetris.api.ITimeObserver;
 
-public class Game extends Canvas implements Runnable, IObserver {
+public class Game extends Canvas implements Runnable, ITimeObserver {
 	/**
 	 *  Game Box
 	 */
@@ -142,12 +141,6 @@ public class Game extends Canvas implements Runnable, IObserver {
 		frame.setVisible(true);
 		
 		game.start();
-	}
-
-
-	@Override
-	public void notify(Direction dir) {
-		
 	}
 
 	@Override
