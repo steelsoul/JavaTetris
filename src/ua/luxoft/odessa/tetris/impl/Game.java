@@ -81,8 +81,7 @@ public class Game extends Canvas implements Runnable, ITimeObserver, IInputObser
 		case MENU:
 			if  (!mMenu.getStarted())
 			{
-				g.setColor(Color.ORANGE);
-				g.drawString("Press any key to start game", 15, 20);
+				mMenu.draw(g);
 			} 
 			else
 			{
@@ -122,6 +121,7 @@ public class Game extends Canvas implements Runnable, ITimeObserver, IInputObser
 				mMenu.drawPause(g);
 			
 			break;
+			
 		case OFF:
 			mMenu.drawGameOver(g, mInfoTable.getScores());
 			break;

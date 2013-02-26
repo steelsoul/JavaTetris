@@ -22,8 +22,15 @@ public class Menu implements IInputObserver{
 	
 	public void draw(Graphics g)
 	{
-		g.setColor(Color.yellow);
+		g.setColor(Color.red);
 		g.drawString("Press any key to start", 15, 50);
+		g.setColor(Color.yellow);
+		g.drawString("To pause - press `P`", 15, 70);
+		g.setColor(Color.green);
+		g.drawString("Controls:", 30, 90);
+		g.setColor(Color.yellow);
+		g.drawString("LEFT, UP, RIGHT, DOWN", 15, 110);
+		g.drawString("Quick falling: SPACE", 15, 130);
 	}
 	
 	public void drawGameOver(Graphics g, int scores)
