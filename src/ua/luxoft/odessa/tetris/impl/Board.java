@@ -81,8 +81,7 @@ public class Board {
 			for (int j = 0; j < HEIGHT; j++)
 			{
 				mNewBoard[i][j].draw(g, 
-						new Point((i-1)*IFigure.SIDE_SIZE + 1, j*IFigure.SIDE_SIZE + 1)
-				);
+					new Point((i-1)*IFigure.SIDE_SIZE + 1, j*IFigure.SIDE_SIZE + 1));
 			}
 		g.setColor(Color.WHITE);
 		g.drawRect(0, 0, IFigure.SIDE_SIZE * WIDTH + 2, IFigure.SIDE_SIZE * HEIGHT + 2);
@@ -94,10 +93,9 @@ public class Board {
 	private void clearLine(int h)
 	{
 		// put down all above
-		for (int y = h; y > 0; y--)		
+		for (int y = h; y > 1; y--)		
 			for (int x = 1; x < WIDTH + 1; x++)
 			{
-				mNewBoard[x][y] = null;
 				mNewBoard[x][y] = new Cell();
 				if (mNewBoard[x][y-1].getCheck())
 				{

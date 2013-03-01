@@ -32,7 +32,6 @@ public class InfoTable implements ActionListener, ITimeObservable {
 		mCoordinates = coordinates;
 		mTimerDelay = 500;
 		mTimer = new Timer(mTimerDelay, this);
-		mTimer.setInitialDelay(mTimerDelay/5);
 		mTimer.start();		
 	}
 	
@@ -48,54 +47,54 @@ public class InfoTable implements ActionListener, ITimeObservable {
 	public void addScores(int scores) {
 		mScores += scores;
 		Boolean isRestartTimer = false;
-		if (mScores > 1000)
+		if (mScores > 20000)
 		{
-			mLevel = 1;
+			mLevel = 10;
 			isRestartTimer = true;
 		}
-		else if (mScores > 2000)
-		{
-			mLevel = 2;
-			isRestartTimer = true;
-		}
-		else if (mScores > 3500)
-		{
-			mLevel = 3;
-			isRestartTimer = true;
-		}
-		else if (mScores > 4800)
-		{
-			mLevel = 4;
-			isRestartTimer = true;
-		}
-		else if (mScores > 6000)
-		{
-			mLevel = 5;
-			isRestartTimer = true;
-		}
-		else if (mScores > 7800)
-		{
-			mLevel = 6;
-			isRestartTimer = true;
-		}
-		else if (mScores > 9000)
-		{
-			mLevel = 7;
-			isRestartTimer = true;
-		}
-		else if (mScores > 11500)
-		{
-			mLevel = 8;
-			isRestartTimer = true;
-		}
-		else if (mScores > 13000)
+		else if (mScores > 16000)
 		{
 			mLevel = 9;
 			isRestartTimer = true;
 		}
-		else if (mScores > 20000)
+		else if (mScores > 13000)
 		{
-			mLevel = 10;
+			mLevel = 8;
+			isRestartTimer = true;
+		}
+		else if (mScores > 10950)
+		{
+			mLevel = 7;
+			isRestartTimer = true;
+		}
+		else if (mScores > 8850)
+		{
+			mLevel = 6;
+			isRestartTimer = true;
+		}
+		else if (mScores > 6800)
+		{
+			mLevel = 5;
+			isRestartTimer = true;
+		}
+		else if (mScores > 5000)
+		{
+			mLevel = 4;
+			isRestartTimer = true;
+		}
+		else if (mScores > 3400)
+		{
+			mLevel = 3;
+			isRestartTimer = true;
+		}
+		else if (mScores > 2100)
+		{
+			mLevel = 2;
+			isRestartTimer = true;
+		}
+		else if (mScores > 900)
+		{
+			mLevel = 1;
 			isRestartTimer = true;
 		}
 			

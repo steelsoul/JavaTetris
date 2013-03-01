@@ -5,59 +5,46 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Point;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 import ua.luxoft.odessa.tetris.api.IFigure;
-import ua.luxoft.odessa.tetris.api.IFigure.Coordinates;
-import ua.luxoft.odessa.tetris.api.IInputObserver;
-import ua.luxoft.odessa.tetris.api.ITimeObserver;
-import ua.luxoft.odessa.tetris.impl.KeyInputHandler.Direction;
+import ua.luxoft.odessa.tetris.impl.menu.Menu;
+import ua.luxoft.odessa.tetris.impl.menu.MenuItem;
+import ua.luxoft.odessa.tetris.impl.menu.commands.CommandHelp;
+import ua.luxoft.odessa.tetris.impl.menu.commands.CommandOptions;
+import ua.luxoft.odessa.tetris.impl.menu.commands.CommandQuit;
+import ua.luxoft.odessa.tetris.impl.menu.commands.CommandStart;
 
-public class Game extends Canvas implements Runnable, ITimeObserver, 
-		IInputObserver, ActionListener {
-	/**
-	 *  Game Box
-	 */
+public class Game extends Canvas implements Runnable {
+
 	private static final long serialVersionUID = 1L;
-	private enum GAME_STATE {MENU, GAME, OFF};
-	
-	private GAME_STATE mGameState;
 	private Boolean isRunning;
-	private Boolean isTimeToMove;
-	private Boolean isPaused;
-	private Boolean isAddDelayActive;
-	
-	private final InfoTable mInfoTable = 
-			new InfoTable(new Coordinates(Board.WIDTH*IFigure.SIDE_SIZE + 3, 
-					IFigure.SIDE_SIZE * 2));
-	
-	private final Board mBoard = new Board(mInfoTable);
-	private KeyInputHandler mInputHandler;
-	private TetrisFigure mFigure, mNextFigure;
 	private Menu mMenu;
-	private Timer mAddDelayTimer;
+	private GameBox mGameBox;
+	private KeyInputHandler mInputHandler;
+	private Object mLocker = new Object();
 	
 	public void start() {
-		mGameState = GAME_STATE.MENU;
-		mMenu = new Menu();
-		isRunning = true;
-		isTimeToMove = true;
-		isPaused = false;
-		isAddDelayActive = false;
 		new Thread(this).start();
-		mAddDelayTimer = null;
 	}
 	
 	public void run() {
 		
 		init();
 		
-		while (isRunning) {
+		while (isRunning) 
+		{
+			synchronized (mLocker) {
+				try {
+					mLocker.wait(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+			}
 			render();
 		}		
 	}
@@ -65,13 +52,26 @@ public class Game extends Canvas implements Runnable, ITimeObserver,
 	public void init() {
 		mInputHandler = new KeyInputHandler();
 		addKeyListener(mInputHandler);
-		mFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
-		mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
-		mInfoTable.setNextFigure(mNextFigure);
-		mInputHandler.addObserver(mFigure);	
+		
+		// Menu filling
+		mMenu = new Menu(mLocker);
+		MenuItem menuItem = new MenuItem(new CommandStart(), new Point(50, 40), mMenu);
+		mMenu.addItem(menuItem);
+		
+		menuItem = new MenuItem(new CommandOptions(), new Point(50, 70), mMenu);
+		mMenu.addItem(menuItem);
+		
+		menuItem = new MenuItem(new CommandHelp(), new Point(50, 100), mMenu);
+		mMenu.addItem(menuItem);
+		
+		menuItem = new MenuItem(new CommandQuit(), new Point(50, 130), mMenu);
+		mMenu.addItem(menuItem);
+		
 		mInputHandler.addObserver(mMenu);
-		mInfoTable.addObserver(this);
-		mInputHandler.addObserver(this);
+		
+		mGameBox = null;
+		
+		isRunning = true;
 	}
 	
 	public void render() {
@@ -87,81 +87,32 @@ public class Game extends Canvas implements Runnable, ITimeObserver,
 		g.setColor(Color.black);
 		g.fillRect(0,  0,  getWidth(), getHeight());
 		
-		switch (mGameState)
+		if (mMenu.isActive())
 		{
-		case MENU:
-			if  (!mMenu.getStarted())
-			{
-				mMenu.draw(g);
-			} 
-			else
+			mMenu.draw(g);
+		}
+		else
+		{
+			if (mGameBox == null)
 			{
 				mInputHandler.removeObserver(mMenu);
-				mGameState = GAME_STATE.GAME;
+				mGameBox = new GameBox(mInputHandler, mLocker);
+				mGameBox.start();
 			}
-			break;
-		case GAME:			
-		
-			/*
-			 *  Here field and figures should be drawn
-			 * */
-			mBoard.draw(g);
-			mInfoTable.draw(g);
-			
-			if (mFigure.isDrawable())
-				mFigure.draw(g, new Coordinates(0, 0));
-			else
-				mGameState = GAME_STATE.OFF;
-			
-			if (isTimeToMove)
-			{
-				if (!mFigure.stepDown())
-				{
-					if (isAddDelayActive == false && mAddDelayTimer == null)
-					{
-						mAddDelayTimer = new Timer(mInfoTable.getDelay(), this);
-						mAddDelayTimer.start();
-						isAddDelayActive = true;
-					}
-					else 
-					{
-						mBoard.setMap(mFigure);
-						mBoard.checkBoard();
-						mInputHandler.removeObserver(mFigure);
-						mFigure = mNextFigure;
-						mInputHandler.addObserver(mFigure);
-						mNextFigure = new TetrisFigure(FigureGenerator.generate(), mBoard);
-						mInfoTable.setNextFigure(mNextFigure);
-						mAddDelayTimer = null;
-						isAddDelayActive = false;
-					}
-				}
-				isTimeToMove = false;			
-			}
-			
-			if (isPaused)
-				mMenu.drawPause(g);
-			
-			break;
-			
-		case OFF:
-			mMenu.drawGameOver(g, mInfoTable.getScores());
-			break;
+			mGameBox.draw(g);
 		}
 		
 		g.dispose();
 		bs.show();
 	}
 	
-	public static int WIDTH = Board.WIDTH * IFigure.SIDE_SIZE + 2 + InfoTable.WIDTH; 
-	public static int HEIGHT = Board.HEIGHT * IFigure.SIDE_SIZE + 2;
 	public static String NAME = "Tetris";
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		Game game = new Game();
-		game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		game.setPreferredSize(new Dimension(IFigure.SIDE_SIZE*Board.WIDTH + 3 + InfoTable.WIDTH, IFigure.SIDE_SIZE*Board.HEIGHT));
 		
 		JFrame frame = new JFrame(Game.NAME);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -173,27 +124,4 @@ public class Game extends Canvas implements Runnable, ITimeObserver,
 		
 		game.start();
 	}
-
-	@Override
-	public void notifyOnTime() {
-		if (!isPaused)
-			isTimeToMove = true;
-	}
-
-	@Override
-	public void notify(Direction dir) {
-		// TODO Auto-generated method stub
-		if (dir == Direction.PAUSE && mGameState == GAME_STATE.GAME)
-		{
-			isPaused = !isPaused;
-		}		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		mAddDelayTimer.stop();
-		isAddDelayActive = false;
-	}
-
 }

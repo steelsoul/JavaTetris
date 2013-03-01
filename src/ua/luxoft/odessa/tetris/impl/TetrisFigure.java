@@ -20,7 +20,7 @@ public class TetrisFigure implements IInputObserver {
 	private IFigure mFigure;
 	private Board mBoard;
 	
-	TetrisFigure(IFigure figure, Board board)
+	public TetrisFigure(IFigure figure, Board board)
 	{
 		mFigure = figure;
 		mBoard = board;
@@ -81,7 +81,7 @@ public class TetrisFigure implements IInputObserver {
 		}
 	}
 	
-	private Boolean checkDown()
+	public Boolean checkDown()
 	{
 		Boolean[][] pres = mFigure.getStrategy().getPresentation();
 		for (int x = 0; x < PresentationSize; x++)

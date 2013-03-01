@@ -73,5 +73,6 @@ public class Cell {
 						IFigure.SIDE_SIZE - 2, IFigure.SIDE_SIZE - 2);
 			}
 		}
+
 	}
 }
